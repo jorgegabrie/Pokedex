@@ -1,8 +1,8 @@
 import logo from './assets/logoPoke.png'
 import './App.css'
 import {useState, useEffect} from 'react'
-import { FaWindowClose } from "react-icons/fa";
-
+import { Pokemon } from './components/Pokemon'
+import { FaSearch } from "react-icons/fa";
 function App() {
 
   const [poke, setPoke] = useState([])
@@ -12,7 +12,7 @@ function App() {
   },[])
 
   const getPokemons = () =>{
-    fetch(`https://pokeapi.co/api/v2/pokemon/`)
+    fetch(`https://pokeapi.co/api/v2/pokemon?limit=151&offset=0`)
     .then((res)=>res.json())
     .then(response=> setPoke(response.results))
     
@@ -24,7 +24,25 @@ return (
       <img src={logo} alt="" className='w-96 h-52'/>
     </header>
     <main className='flex justify-center flex-col items-center'>
-      <input type="text" placeholder='Digite um pokemon' className='w-52 bg-gray-400 placeholder-black mt-4 p-3 rounded-md	' />
+      <div className='flex gap-12 justify-center items-center'>
+          <div className='flex gap-4 w-6/12 flex-wrap mt-4'>
+            <button className='p-3 rounded-xl bg-red-500 '>Fogo</button>
+            <button className='p-3 rounded-xl bg-blue-500 '>Agua</button>
+            <button className='p-3 rounded-xl bg-amber-700 '>terra</button>
+            <button className='p-3 rounded-xl bg-green-500 '>Grama</button>
+            <button className='p-3 rounded-xl bg-cyan-800 '>Lutador</button>
+            <button className='p-3 rounded-xl bg-slate-600 '>Fantasma</button>
+            <button className='p-3 rounded-xl bg-yellow-500 '>Eletrico</button>
+
+
+          </div>
+        <form className='gap-2 flex'>
+          <input type="text" placeholder='Digite um pokemon' className='w-52 bg-gray-400 placeholder-black mt-4 p-3 rounded-md'/>
+          <button type="submit" className='w-12 items-center justify-center flex bg-gray-400 placeholder-black mt-4 p-3 rounded-md'>
+                        <FaSearch/>
+          </button>
+        </form>
+      </div>
       
       <section className='flex items-center justify-center gap-7 flex-wrap mt-10'>
         {poke.map((iten)=>(
@@ -37,46 +55,6 @@ return (
 )
 }
 
-const Pokemon = ({data}) =>{
-  const [details, setDetails] = useState(null)
-  const [btn, setBtn] = useState(false)
-
-  const handleButton = ()=>{
-    setBtn(!btn)
-    console.log(btn)
-}
-
-  useEffect(()=>{
-    fetch(data.url)
-    .then((res)=> res.json())
-    .then((result) => setDetails(result))
-  },[])
-
-  if(details === null){
-    return <div>-</div>
-  }
-// 
-  return (
-  <div className={"bg-slate-300 p-5 rounded flex flex-col gap-2 items-center"} >
-    <img className='w-44 bg-slate-600 rounded-xl' src={details.sprites.front_default} alt="" />
-    <p className='font-bold'>{details.name.toUpperCase()}  </p><span>type: {details.types[0].type.name}</span>
-    <button className='bg-orange-500 rounded hover:bg-orange-600' onClick={handleButton}>DETALHES</button>
-    {btn && (
-      <div className='w-6/12 h-7/12 flex   top-16 right-1/4 left-1/4 bg-gray-500 fixed p-10 gap-7'>
-        <FaWindowClose className='absolute -top-5 -right-5 text-5xl' onClick={handleButton}/>
-        <img className='w-80  bg-slate-600 rounded-xl ' src={details.sprites.front_default} alt="" />
-        <div className='flex flex-col gap-3'>
-            <p className='font-bold text-5xl'>{details.name.toUpperCase()}</p>
-            <span className='text-3xl'>type: {details.types[0].type.name}</span>
-            <p className='text-3x1'>EXP: {details.base_experience}</p>
-        </div>
-        
-      </div>
-    )}
-  </div>
-  
-  )
-}
 export default App
   
 
