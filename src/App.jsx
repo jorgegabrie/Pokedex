@@ -6,15 +6,16 @@ import { FaSearch } from "react-icons/fa";
 function App() {
 
   const [poke, setPoke] = useState([])
-  const [search, setSearch] = useState('')
-  const FilterPokemon = (nome) =>{
-    setSearch(nome)
-    console.log(search)
+  const [search, setSearch] = useState("")
+
+  const handleChange = (e) =>{
+    setSearch(e.target.value)
+    console.log(e.target.value)
   }
+
+ 
   useEffect(()=>{
     getPokemons()
-    
-    
   },[])
 // https://pokeapi.co/api/v2/pokemon?limit=151&offset=0
   const getPokemons = () =>{
@@ -44,7 +45,7 @@ return (
 
           </div>
         <form className='gap-2 flex'>
-          <input type="text" placeholder='Digite um pokemon' className='w-52 bg-gray-400 placeholder-black mt-4 p-3 rounded-md' onChange={ (e) => FilterPokemon(e.target.value)} />
+          <input type="text" placeholder='Digite um pokemon' className='w-52 bg-gray-400 placeholder-black mt-4 p-3 rounded-md' onChange={handleChange} />
           <button type="submit" className='w-12 items-center justify-center flex bg-gray-400 placeholder-black mt-4 p-3 rounded-md'>
                         <FaSearch/>
           </button>
@@ -52,7 +53,7 @@ return (
       </div>
       
       <section className='flex items-center justify-center gap-7 flex-wrap mt-10'>
-        {poke.filter((iten)=> iten.name.includes(search)).map((iten, index)=>(
+        {poke.filter((iten)=> iten.name.toLocaleLowerCase().includes(search)).map((iten, index)=>(
           <Pokemon key={index}data={iten}/>
           )
         )}
